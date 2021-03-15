@@ -41,4 +41,5 @@ public class DateUtils {
         calendar.setTime(date);
         return calendar.get(DAY_OF_WEEK) == dayOfWeek;
     }
+
 }

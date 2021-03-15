@@ -10,13 +10,11 @@ import exceptions.VideoStoreException;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-
-import org.junit.runners.Parameterized;
 import utils.DateUtils;
 
 import java.util.*;
 
+import static matchers.MatchersOwn.*;
 import static org.hamcrest.CoreMatchers.*;
 
 
@@ -70,6 +68,18 @@ public class RentServiceTest {
         error.checkThat(service.rentMovies(user, movies), notNullValue());
     }
 
+    @Test
+    public void rentMovie() throws MovieException, InventoryException, UserException {
+        List<Movie> movies = new ArrayList<>(Arrays
+                .asList(new Movie("Movie 1", 3, 10d)));
+        User user = new User("User 1");
+
+        Rent rent = service.rentMovies(user,movies);
+
+        error.checkThat(rent.getPrice(), is(equalTo(10d)));
+        error.checkThat(rent.getDateRent(), isToday());
+    }
+
 
     @Test
     public void rentApplyDiscount() throws VideoStoreException {
@@ -97,8 +107,9 @@ public class RentServiceTest {
         User user = new User("User 1");
 
         Rent rent = service.rentMovies(user, movies);
-        boolean isSunday = DateUtils.isDayOfWeek(rent.getDateReturn(), Calendar.SUNDAY);
 
-        Assert.assertTrue(isSunday);
+        error.checkThat(rent.getDateReturn(), fallsIn(Calendar.MONDAY));
+        error.checkThat(rent.getDateReturn(), fallsInMonday());
+
     }
 }
