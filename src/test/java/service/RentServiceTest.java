@@ -10,11 +10,15 @@ import exceptions.VideoStoreException;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+
+import org.junit.runners.Parameterized;
 import utils.DateUtils;
 
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.*;
+
 
 public class RentServiceTest {
 
@@ -25,6 +29,7 @@ public class RentServiceTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
+
 
     @Before
     public void before() {
@@ -79,76 +84,6 @@ public class RentServiceTest {
         Rent rent = service.rentMovies(user, movies);
 
         error.checkThat(rent.getPrice(), is(66.5));
-    }
-
-    @Test
-    public void getProgressiveDiscount25() {
-        List<Movie> movies = new ArrayList<>(Arrays
-                .asList(new Movie("Movie 1", 3, 10d),
-                        new Movie("Movie 2", 2, 8d),
-                        new Movie("Movie 3", 5, 7d)));
-
-        double finalPrice = service.applyDiscount(movies);
-
-        error.checkThat(finalPrice, equalTo(0.25));
-    }
-
-    @Test
-    public void getProgressiveDiscount50() {
-        List<Movie> movies = new ArrayList<>(Arrays
-                .asList(new Movie("Movie 1", 3, 10d),
-                        new Movie("Movie 2", 2, 8d),
-                        new Movie("Movie 3", 5, 7d),
-                        new Movie("Movie 4", 2, 8d)));
-
-        double finalPrice = service.applyDiscount(movies);
-
-        error.checkThat(finalPrice, equalTo(0.50));
-    }
-
-    @Test
-    public void getProgressiveDiscount75() {
-        List<Movie> movies = new ArrayList<>(Arrays
-                .asList(new Movie("Movie 1", 3, 10d),
-                        new Movie("Movie 2", 2, 8d),
-                        new Movie("Movie 3", 5, 7d),
-                        new Movie("Movie 4", 2, 8d),
-                        new Movie("Movie 5", 1, 15d)));
-
-        double finalPrice = service.applyDiscount(movies);
-
-        error.checkThat(finalPrice, equalTo(0.75));
-    }
-
-    @Test
-    public void getProgressiveDiscount100() {
-        List<Movie> movies = new ArrayList<>(Arrays
-                .asList(new Movie("Movie 1", 3, 10d),
-                        new Movie("Movie 2", 2, 8d),
-                        new Movie("Movie 3", 5, 7d),
-                        new Movie("Movie 4", 2, 8d),
-                        new Movie("Movie 5", 1, 15d),
-                        new Movie("Movie 6", 5, 5d)));
-
-        double finalPrice = service.applyDiscount(movies);
-
-        error.checkThat(finalPrice, equalTo(1.0));
-    }
-
-    @Test
-    public void getProgressiveDiscountMoreMovies() {
-        List<Movie> movies = new ArrayList<>(Arrays
-                .asList(new Movie("Movie 1", 3, 10d),
-                        new Movie("Movie 2", 2, 8d),
-                        new Movie("Movie 3", 5, 7d),
-                        new Movie("Movie 4", 2, 8d),
-                        new Movie("Movie 5", 1, 15d),
-                        new Movie("Movie 6", 5, 5d),
-                        new Movie("Movie 7", 5, 5d)));
-
-        double finalPrice = service.applyDiscount(movies);
-
-        error.checkThat(finalPrice, equalTo(1.0));
     }
 
     @Test
